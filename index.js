@@ -133,31 +133,35 @@ function cookieSession (options) {
 
           console.log('cookieValue:', cookieValue)
 
-          cookies.set(name, Session.serialize(sess), req.sessionOptions)
+          const newCookieValue = `session=${cookieValue}; path=/; expires=Sat, 18 Nov 2023 18:39:46 GMT; httponly; SameSite=None`
 
-
-
-          const cookieHeaders = res.get('Set-Cookie')
-
-          console.log('old cookieHeaders:', cookieHeaders)
-
-          const newHeaders = []
-          for (const cookieHeader of cookieHeaders) {
-            const newHeader = cookieHeader + '; SameSite=None'
-            newHeaders.push(newHeader)
-          }
-
-          console.log('newHeaders:', newHeaders)
+          //cookies.set(name, Session.serialize(sess), req.sessionOptions)
 
           var setHeader = res.set ? http.OutgoingMessage.prototype.setHeader : res.setHeader
-          setHeader.call(res, 'Set-Cookie', newHeaders)
+          setHeader.call(res, 'Set-Cookie', [newCookieValue])
 
 
-          console.log('!!! res.getHeaders():', res.getHeaders())
+          // const cookieHeaders = res.get('Set-Cookie')
+
+          // console.log('old cookieHeaders:', cookieHeaders)
+
+          // const newHeaders = []
+          // for (const cookieHeader of cookieHeaders) {
+          //   const newHeader = cookieHeader + '; SameSite=None'
+          //   newHeaders.push(newHeader)
+          // }
+
+          // console.log('newHeaders:', newHeaders)
+
+          // var setHeader = res.set ? http.OutgoingMessage.prototype.setHeader : res.setHeader
+          // setHeader.call(res, 'Set-Cookie', newHeaders)
+
+
+          console.log('--> res.getHeaders():', res.getHeaders())
       
-          console.log(`!!! res.get('Set-Cookie')`, res.get('Set-Cookie'))
+          console.log(`--> res.get('Set-Cookie')`, res.get('Set-Cookie'))
         
-          console.log('!!! res.header()._headers', res.header()._headers)
+          console.log('--> res.header()._headers', res.header()._headers)
 
           // console.log('!! calling res.cookie')
           // res.cookie(name, Session.serialize(sess), { sameSite: 'none', secure: true})
