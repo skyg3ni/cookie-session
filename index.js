@@ -139,13 +139,36 @@ function cookieSession (options) {
             headers = `${headers}; Secure; SameSite=None`
             headers = [headers]
           }
-          const cookieHeaderValue = `session=${cookieValue}; path=/; expires=Sat, 18 Nov 2023 18:39:46 GMT; httponly; Secure; SameSite=None`
+          const cookieHeaderValue = `session=${cookieValue}; path=/; expires=Sat, 20 Nov 2023 18:39:46 GMT; httponly; Secure; SameSite=None`
 
           console.log('cookieHeaderValue:', cookieHeaderValue)
 
           headers.push(cookieHeaderValue)
 
+          
+          const Keygrip = require('keygrip')
+          const keys = new Keygrip(options.keys)
+
+          const sigCookieValue = keys.sign("session="+cookieValue)
+          const sigCookieHeaderValue = `session.sig=${sigCookieValue}; path=/; expires=Sat, 20 Nov 2023 18:39:46 GMT; httponly; Secure; SameSite=None`
+
+          console.log('sigCookieHeaderValue:', sigCookieHeaderValue)
+
+          headers.push(sigCookieHeaderValue)
+
           res.set('Set-Cookie', headers)
+
+
+          // this.name + "=" + this.value
+
+          // pushCookie(headers, cookie)
+
+          // if (opts && signed) {
+          //   if (!this.keys) throw new Error('.keys required for signed cookies');
+          //   cookie.value = this.keys.sign(cookie.toString())
+          //   cookie.name += ".sig"
+          //   pushCookie(headers, cookie)
+          // }
 
           // const cookieHeaders = res.get('Set-Cookie')
 
