@@ -131,15 +131,28 @@ function cookieSession (options) {
 
           const cookieValue = Session.serialize(sess)
 
-          console.log('cookieValue:', cookieValue)
+          //console.log('cookieValue:', cookieValue)
 
           cookies.set(name, Session.serialize(sess), req.sessionOptions)
 
-          console.log('!! res.getHeaders():', res.getHeaders())
+
+
+          const cookieHeaders = res.get('Set-Cookie')
+
+          const newHeaders = []
+          for (const cookieHeader of cookieHeaders) {
+            const newHeader = cookieHeader + '; SameSite=None'
+          }
+
+          var setHeader = res.set ? http.OutgoingMessage.prototype.setHeader : res.setHeader
+          setHeader.call(res, 'Set-Cookie', newHeaders)
+
+
+          console.log('!!! res.getHeaders():', res.getHeaders())
       
-          console.log(`!! res.get('Set-Cookie')`, res.get('Set-Cookie'))
+          console.log(`!!! res.get('Set-Cookie')`, res.get('Set-Cookie'))
         
-          console.log('!! res.header()._headers', res.header()._headers)
+          console.log('!!! res.header()._headers', res.header()._headers)
 
           // console.log('!! calling res.cookie')
           // res.cookie(name, Session.serialize(sess), { sameSite: 'none', secure: true})
