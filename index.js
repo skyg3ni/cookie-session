@@ -139,10 +139,15 @@ function cookieSession (options) {
 
           const cookieHeaders = res.get('Set-Cookie')
 
+          console.log('old cookieHeaders:', cookieHeaders)
+
           const newHeaders = []
           for (const cookieHeader of cookieHeaders) {
             const newHeader = cookieHeader + '; SameSite=None'
+            newHeaders.push(newHeader)
           }
+
+          console.log('newHeaders:', newHeaders)
 
           var setHeader = res.set ? http.OutgoingMessage.prototype.setHeader : res.setHeader
           setHeader.call(res, 'Set-Cookie', newHeaders)
