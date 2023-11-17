@@ -132,6 +132,11 @@ function cookieSession (options) {
     //   }
     // })
 
+    if (sess === undefined) {
+      // not accessed
+      return
+    }
+
     if (sess === false) {
       cookies.set(name, '', req.sessionOptions)
       res.cookie(name, '', { sameSite: 'none', secure: true})
