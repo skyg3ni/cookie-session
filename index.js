@@ -131,7 +131,7 @@ function cookieSession (options) {
 
           const cookieValue = Session.serialize(sess)
 
-          //console.log('cookieValue:', cookieValue)
+          console.log('cookieValue:', cookieValue)
 
           cookies.set(name, Session.serialize(sess), req.sessionOptions)
 
