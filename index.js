@@ -133,8 +133,10 @@ function cookieSession (options) {
     // })
 
     if (sess === undefined) {
+      console.log('got here session undefined')
       // not accessed
     } else {
+      console.log('got here session:', sess)
       if (sess === false) {
         cookies.set(name, '', req.sessionOptions)
         res.cookie(name, '', { sameSite: 'none', secure: true})
