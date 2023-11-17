@@ -128,6 +128,11 @@ function cookieSession (options) {
           // save populated or non-new changed session
           debug('save %s', name)
           console.log('got here! req.sessionOptions:', req.sessionOptions)
+
+          const cookieValue = Session.serialize(sess)
+
+          console.log('cookieValue:', cookieValue)
+
           cookies.set(name, Session.serialize(sess), req.sessionOptions)
 
           console.log('!! res.getHeaders():', res.getHeaders())
