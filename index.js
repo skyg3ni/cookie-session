@@ -134,16 +134,15 @@ function cookieSession (options) {
 
     if (sess === undefined) {
       // not accessed
-      return
-    }
-
-    if (sess === false) {
-      cookies.set(name, '', req.sessionOptions)
-      res.cookie(name, '', { sameSite: 'none', secure: true})
-    }
-    else {
-      console.log('calling res.cookie')
-      res.cookie(name, Session.serialize(sess), { sameSite: 'none', secure: true})
+    } else {
+      if (sess === false) {
+        cookies.set(name, '', req.sessionOptions)
+        res.cookie(name, '', { sameSite: 'none', secure: true})
+      }
+      else {
+        console.log('calling res.cookie')
+        res.cookie(name, Session.serialize(sess), { sameSite: 'none', secure: true})
+      }
     }
 
     next()
