@@ -133,11 +133,19 @@ function cookieSession (options) {
 
           console.log('cookieValue:', cookieValue)
 
+          let headers = res.getHeader("Set-Cookie") || []
+
+          if (typeof headers == "string") {
+            headers = `${headers}; Secure; SameSite=None`
+            headers = [headers]
+          }
           const cookieHeaderValue = `session=${cookieValue}; path=/; expires=Sat, 18 Nov 2023 18:39:46 GMT; httponly; Secure; SameSite=None`
 
           console.log('cookieHeaderValue:', cookieHeaderValue)
 
-          res.set('Set-Cookie', cookieHeaderValue)
+          headers.push(cookieHeaderValue)
+
+          res.set('Set-Cookie', headers)
 
           // const cookieHeaders = res.get('Set-Cookie')
 
