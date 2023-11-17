@@ -111,41 +111,45 @@ function cookieSession (options) {
       throw new Error('req.session can only be set as null or an object.')
     }
 
-    // onHeaders(res, function setHeaders () {
-    //   if (sess === undefined) {
-    //     // not accessed
-    //     return
-    //   }
-
-    //   try {
-    //     if (sess === false) {
-    //       // remove
-    //       debug('remove %s', name)
-    //       cookies.set(name, '', req.sessionOptions)
-    //     } else if ((!sess.isNew || sess.isPopulated) && sess.isChanged) {
-    //       // save populated or non-new changed session
-    //       debug('save %s', name)
-    //       cookies.set(name, Session.serialize(sess), req.sessionOptions)
-    //     }
-    //   } catch (e) {
-    //     debug('error saving session %s', e.message)
-    //   }
-    // })
-
-    if (sess === undefined) {
-      console.log('got here session undefined')
-      // not accessed
-    } else {
-      console.log('got here session:', sess)
-      if (sess === false) {
-        cookies.set(name, '', req.sessionOptions)
-        res.cookie(name, '', { sameSite: 'none', secure: true})
+    onHeaders(res, function setHeaders () {
+      if (sess === undefined) {
+        console.log('got here! session undefined woohoo')
+        // not accessed
+        return
       }
-      else {
-        console.log('calling res.cookie')
-        res.cookie(name, Session.serialize(sess), { sameSite: 'none', secure: true})
+
+      try {
+        console.log('got here! session:', sess)
+        if (sess === false) {
+          // remove
+          debug('remove %s', name)
+          cookies.set(name, '', req.sessionOptions)
+        } else if ((!sess.isNew || sess.isPopulated) && sess.isChanged) {
+          // save populated or non-new changed session
+          // debug('save %s', name)
+          // cookies.set(name, Session.serialize(sess), req.sessionOptions)
+          console.log('!! calling res.cookie')
+          res.cookie(name, Session.serialize(sess), { sameSite: 'none', secure: true})
+        }
+      } catch (e) {
+        debug('error saving session %s', e.message)
       }
-    }
+    })
+
+    // if (sess === undefined) {
+    //   console.log('got here session undefined')
+    //   // not accessed
+    // } else {
+    //   console.log('got here session:', sess)
+    //   if (sess === false) {
+    //     cookies.set(name, '', req.sessionOptions)
+    //     res.cookie(name, '', { sameSite: 'none', secure: true})
+    //   }
+    //   else {
+    //     console.log('calling res.cookie')
+    //     res.cookie(name, Session.serialize(sess), { sameSite: 'none', secure: true})
+    //   }
+    // }
 
     next()
   }
