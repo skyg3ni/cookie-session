@@ -126,10 +126,18 @@ function cookieSession (options) {
           cookies.set(name, '', req.sessionOptions)
         } else if ((!sess.isNew || sess.isPopulated) && sess.isChanged) {
           // save populated or non-new changed session
-          // debug('save %s', name)
-          // cookies.set(name, Session.serialize(sess), req.sessionOptions)
-          console.log('!! calling res.cookie')
-          res.cookie(name, Session.serialize(sess), { sameSite: 'none', secure: true})
+          debug('save %s', name)
+          console.log('got here! req.sessionOptions:', req.sessionOptions)
+          cookies.set(name, Session.serialize(sess), req.sessionOptions)
+
+          console.log('!! res.getHeaders():', res.getHeaders())
+      
+          console.log(`!! res.get('Set-Cookie')`, res.get('Set-Cookie'))
+        
+          console.log('!! res.header()._headers', res.header()._headers)
+
+          // console.log('!! calling res.cookie')
+          // res.cookie(name, Session.serialize(sess), { sameSite: 'none', secure: true})
         }
       } catch (e) {
         debug('error saving session %s', e.message)
