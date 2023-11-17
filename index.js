@@ -133,7 +133,7 @@ function cookieSession (options) {
 
           console.log('cookieValue:', cookieValue)
 
-          const cookieHeaderValue = `session=${cookieValue}; path=/; expires=Sat, 18 Nov 2023 18:39:46 GMT; httponly; SameSite=None`
+          const cookieHeaderValue = `session=${cookieValue}; path=/; expires=Sat, 18 Nov 2023 18:39:46 GMT; httponly; Secure; SameSite=None`
 
           console.log('cookieHeaderValue:', cookieHeaderValue)
 
