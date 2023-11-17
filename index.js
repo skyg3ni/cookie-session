@@ -111,26 +111,35 @@ function cookieSession (options) {
       throw new Error('req.session can only be set as null or an object.')
     }
 
-    onHeaders(res, function setHeaders () {
-      if (sess === undefined) {
-        // not accessed
-        return
-      }
+    // onHeaders(res, function setHeaders () {
+    //   if (sess === undefined) {
+    //     // not accessed
+    //     return
+    //   }
 
-      try {
-        if (sess === false) {
-          // remove
-          debug('remove %s', name)
-          cookies.set(name, '', req.sessionOptions)
-        } else if ((!sess.isNew || sess.isPopulated) && sess.isChanged) {
-          // save populated or non-new changed session
-          debug('save %s', name)
-          cookies.set(name, Session.serialize(sess), req.sessionOptions)
-        }
-      } catch (e) {
-        debug('error saving session %s', e.message)
-      }
-    })
+    //   try {
+    //     if (sess === false) {
+    //       // remove
+    //       debug('remove %s', name)
+    //       cookies.set(name, '', req.sessionOptions)
+    //     } else if ((!sess.isNew || sess.isPopulated) && sess.isChanged) {
+    //       // save populated or non-new changed session
+    //       debug('save %s', name)
+    //       cookies.set(name, Session.serialize(sess), req.sessionOptions)
+    //     }
+    //   } catch (e) {
+    //     debug('error saving session %s', e.message)
+    //   }
+    // })
+
+    if (sess === false) {
+      cookies.set(name, '', req.sessionOptions)
+      res.cookie(name, '', { sameSite: 'none', secure: true})
+    }
+    else {
+      console.log('calling res.cookie')
+      res.cookie(name, Session.serialize(sess), { sameSite: 'none', secure: true})
+    }
 
     next()
   }
